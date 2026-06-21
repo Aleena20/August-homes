@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>August Home — Smart Access for Short-Term Rental Hosts</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+  :root{
+    --navy:#15203A;
+    --navy-2:#1C2B4A;
+    --accent:#2E5FA3;
+    --teal:#1A6B55;
+    --teal-light:#E4F2EC;
+    --paper:#F7F5EF;
+    --paper-2:#EFEBE0;
+    --ink:#1A1A1A;
+    --muted:#5B6478;
+    --line:#DAD5C6;
+    --white:#FFFFFF;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important;}
+  }
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:500;letter-spacing:-0.01em;color:var(--navy-2);}
+  .eyebrow{
+    font-family:'Space Mono',monospace;
+    font-size:11px;letter-spacing:2.5px;text-transform:uppercase;
+    color:var(--accent); font-weight:700;
+  }
+
+  /* ───────── NAV ───────── */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(247,245,239,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 0;
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces',serif; font-weight:600; font-size:19px; color:var(--navy-2);
+  }
+  .logo-mark{
+    width:30px; height:30px; border-radius:50%;
+    background:var(--navy-2);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--paper); font-family:'Space Mono',monospace; font-size:13px; font-weight:700;
+  }
+  .nav-links{display:flex; gap:34px; align-items:center;}
+  .nav-links a{
+    font-size:14px; font-weight:500; color:var(--navy-2);
+    position:relative; padding:4px 0;
+  }
+  .nav-links a::after{
+    content:""; position:absolute; left:0; bottom:0; width:0; height:1.5px;
+    background:var(--accent); transition:width .25s ease;
+  }
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{
+    background:var(--navy-2); color:var(--white)!important;
+    padding:10px 20px; border-radius:2px; font-size:13.5px; font-weight:600;
+  }
+  .nav-cta::after{display:none;}
+  .nav-cta:hover{background:var(--accent);}
+
+  /* ───────── HERO ───────── */
+  .hero{
+    padding:120px 0 100px;
+    position:relative;
+    overflow:hidden;
+    background:var(--navy);
+    isolation:isolate;
+  }
+  .hero-bg{
+    position:absolute; inset:0; z-index:-2;
+  }
+  .hero-bg svg{width:100%; height:100%; display:block;}
+  .hero-bg-overlay{
+    position:absolute; inset:0; z-index:-1;
+    background:linear-gradient(100deg,
+      rgba(21,32,58,0.97) 0%,
+      rgba(21,32,58,0.93) 30%,
+      rgba(21,32,58,0.55) 56%,
+      rgba(21,32,58,0.20) 75%,
+      rgba(21,32,58,0.05) 100%);
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:64px; align-items:center;
+  }
+  .hero .eyebrow{color:#8FB4F0;}
+  .hero h1{
+    font-size:54px; line-height:1.06; margin:18px 0 22px;
+    color:var(--white);
+  }
+  .hero h1 em{font-style:italic; color:#8FB4F0;}
+  .hero p.lead{
+    font-size:17px; color:#C3CEE2; max-width:480px; margin-bottom:34px;
+  }
+  .hero .stat-num{color:var(--white);}
+  .hero .stat-label{color:#9FB0CE;}
+  .hero-stats{border-top:1px solid rgba(255,255,255,0.15);}
+  .hero .btn-secondary{border-color:#fff; color:#fff;}
+  .hero .btn-secondary:hover{background:#fff; color:var(--navy-2);}
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--navy-2); color:var(--white);
+    padding:14px 26px; border-radius:2px; font-weight:600; font-size:14.5px;
+    display:inline-flex; align-items:center; gap:8px;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .btn-primary:hover{background:var(--accent); transform:translateY(-1px);}
+  .btn-secondary{
+    border:1.5px solid var(--navy-2); color:var(--navy-2);
+    padding:13px 24px; border-radius:2px; font-weight:600; font-size:14.5px;
+    transition:all .2s ease;
+  }
+  .btn-secondary:hover{background:var(--navy-2); color:var(--white);}
+
+  .hero-stats{
+    display:flex; gap:36px; margin-top:48px; padding-top:28px;
+    border-top:1px solid var(--line);
+  }
+  .stat-num{
+    font-family:'Fraunces',serif; font-size:30px; color:var(--navy-2); font-weight:600;
+  }
+  .stat-label{font-size:12px; color:var(--muted); margin-top:2px;}
+
+  /* signature element — the access timeline */
+  .timeline-card{
+    background:var(--navy-2);
+    border-radius:4px;
+    padding:36px 32px;
+    position:relative;
+    box-shadow:0 30px 60px -20px rgba(21,32,58,0.35);
+  }
+  .timeline-card .eyebrow{color:#7FA8E0; margin-bottom:6px; display:block;}
+  .timeline-title{color:var(--white); font-family:'Inter',sans-serif; font-weight:600; font-size:15px; margin-bottom:28px;}
+  .tl-row{display:flex; gap:16px; align-items:flex-start; margin-bottom:0; position:relative;}
+  .tl-dot-col{display:flex; flex-direction:column; align-items:center; width:20px;}
+  .tl-dot{
+    width:12px; height:12px; border-radius:50%; background:#3A4D74;
+    border:2px solid #5B7BAE; flex-shrink:0;
+    transition:background .4s ease, border-color .4s ease;
+  }
+  .tl-dot.active{background:#5BD68C; border-color:#5BD68C;}
+  .tl-line{width:2px; flex:1; background:#3A4D74; min-height:30px;}
+  .tl-content{padding-bottom:30px; flex:1;}
+  .tl-time{font-family:'Space Mono',monospace; font-size:10.5px; color:#7C8CAC; letter-spacing:1px; margin-bottom:4px;}
+  .tl-text{color:#E8ECF5; font-size:14px; font-weight:500;}
+  .tl-sub{color:#9FB0CE; font-size:12.5px; margin-top:3px; line-height:1.4;}
+
+  /* ───────── TRUST STRIP ───────── */
+  .trust-strip{
+    background:var(--navy-2); padding:18px 0; overflow:hidden;
+  }
+  .trust-track{
+    display:flex; gap:64px; align-items:center;
+    font-family:'Space Mono',monospace; font-size:12.5px; letter-spacing:1.5px;
+    color:#8FA3C8; text-transform:uppercase; white-space:nowrap;
+  }
+
+  /* ───────── SECTION HEADER ───────── */
+  .section{padding:90px 0;}
+  .section-head{max-width:600px; margin-bottom:56px;}
+  .section-head h2{font-size:36px; margin-top:10px; line-height:1.15;}
+  .section-head p{color:var(--muted); font-size:15.5px; margin-top:14px;}
+  .section.alt{background:var(--paper-2);}
+
+  /* ───────── PROBLEM ───────── */
+  .problem-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line);
+  }
+  .problem-card{
+    background:var(--paper); padding:32px 28px;
+  }
+  .problem-pct{
+    font-family:'Fraunces',serif; font-size:42px; color:var(--navy-2); font-weight:600;
+  }
+  .problem-card h3{font-size:16px; margin:10px 0 8px; color:var(--ink); font-weight:600; font-family:'Inter',sans-serif;}
+  .problem-card p{font-size:13.5px; color:var(--muted); line-height:1.55;}
+
+  /* ───────── HOW IT WORKS ───────── */
+  .how-list{display:flex; flex-direction:column;}
+  .how-row{
+    display:grid; grid-template-columns:90px 1fr 1fr; gap:32px;
+    padding:34px 0; border-top:1px solid var(--line);
+    align-items:center;
+  }
+  .how-row:last-child{border-bottom:1px solid var(--line);}
+  .how-step{
+    font-family:'Space Mono',monospace; font-size:13px; color:var(--accent); font-weight:700;
+  }
+  .how-row h3{font-size:20px; margin-bottom:6px;}
+  .how-row p{color:var(--muted); font-size:14.5px; max-width:380px;}
+  .how-visual{
+    background:var(--navy-2); border-radius:4px; height:120px;
+    display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
+  }
+  .how-visual .glyph{font-size:34px; opacity:.9;}
+  .pulse-ring{
+    position:absolute; width:60px;height:60px;border-radius:50%;
+    border:1.5px solid rgba(95,166,255,.5);
+    animation:pulse 2.4s ease-out infinite;
+  }
+  @keyframes pulse{
+    0%{transform:scale(.6);opacity:.9;}
+    100%{transform:scale(2.2);opacity:0;}
+  }
+
+  /* ───────── FEATURES (Nuki-equivalent categories) ───────── */
+  .feat-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line);
+  }
+  .feat-card{
+    background:var(--paper); padding:30px 26px; min-height:190px;
+    display:flex; flex-direction:column;
+  }
+  .feat-icon{
+    width:34px; height:34px; border-radius:50%;
+    border:1.5px solid var(--navy-2);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Mono',monospace; font-size:13px; font-weight:700; color:var(--navy-2);
+    margin-bottom:16px;
+  }
+  .feat-card h3{font-size:16px; font-weight:600; font-family:'Inter',sans-serif; margin-bottom:8px; color:var(--ink);}
+  .feat-card p{font-size:13.5px; color:var(--muted); line-height:1.55; flex:1;}
+  .feat-tag{
+    font-family:'Space Mono',monospace; font-size:10px; letter-spacing:1px;
+    color:var(--teal); text-transform:uppercase; margin-top:14px;
+  }
+
+  /* ───────── INTEGRATIONS ───────── */
+  .integration-row{
+    display:flex; flex-wrap:wrap; gap:14px; margin-top:36px;
+  }
+  .integration-chip{
+    border:1px solid var(--line); background:var(--white);
+    padding:14px 22px; border-radius:2px;
+    font-family:'Space Mono',monospace; font-size:13px; font-weight:700; color:var(--navy-2);
+    display:flex; align-items:center; gap:10px;
+  }
+  .integration-chip .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);}
+
+  /* ───────── COMPLIANCE BANNER ───────── */
+  .compliance{
+    background:var(--navy-2); color:var(--white); padding:80px 0;
+  }
+  .compliance .section-head h2{color:var(--white);}
+  .compliance .section-head p{color:#A9B7D2;}
+  .compliance-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:28px; margin-top:20px;}
+  .comp-card{border-left:2px solid #3A4D74; padding-left:18px;}
+  .comp-card .num{font-family:'Fraunces',serif; font-size:26px; color:#7FA8E0; font-weight:600;}
+  .comp-card h4{font-size:14.5px; font-weight:600; color:var(--white); margin:8px 0 6px; font-family:'Inter',sans-serif;}
+  .comp-card p{font-size:13px; color:#9FB0CE; line-height:1.5;}
+
+  /* ───────── PRICING ───────── */
+  .price-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:20px;}
+  .price-card{
+    background:var(--white); border:1px solid var(--line); border-radius:4px;
+    padding:32px 28px; display:flex; flex-direction:column;
+  }
+  .price-card.featured{
+    background:var(--navy-2); border-color:var(--navy-2);
+    transform:translateY(-10px);
+    box-shadow:0 24px 50px -20px rgba(21,32,58,0.4);
+  }
+  .price-card.featured *{color:var(--white)!important;}
+  .price-card.featured .price-feat li::before{color:#5BD68C!important;}
+  .price-kind{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent); font-weight:700;}
+  .price-name{font-family:'Fraunces',serif; font-size:22px; margin:10px 0 4px;}
+  .price-num{font-family:'Fraunces',serif; font-size:38px; font-weight:600; color:var(--navy-2); margin:14px 0 2px;}
+  .price-num span{font-size:14px; font-family:'Inter',sans-serif; font-weight:500; color:var(--muted);}
+  .price-desc{font-size:13px; color:var(--muted); margin-bottom:22px;}
+  .price-feat{list-style:none; flex:1;}
+  .price-feat li{
+    font-size:13.5px; color:var(--ink); padding:9px 0; border-top:1px solid var(--line);
+    padding-left:20px; position:relative;
+  }
+  .price-feat li::before{
+    content:"+"; position:absolute; left:0; color:var(--teal); font-weight:700;
+  }
+  .price-btn{
+    margin-top:24px; text-align:center; padding:12px; border-radius:2px;
+    border:1.5px solid var(--navy-2); font-weight:600; font-size:13.5px;
+    transition:all .2s ease;
+  }
+  .price-card:not(.featured) .price-btn:hover{background:var(--navy-2); color:var(--white);}
+  .price-card.featured .price-btn{background:var(--white); color:var(--navy-2)!important; border:none;}
+
+  /* ───────── FAQ-ish validation note ───────── */
+  .validation-note{
+    background:var(--teal-light); border:1px solid #C5E0D3; border-radius:4px;
+    padding:24px 28px; margin-top:40px;
+    font-size:13.5px; color:#1A4D3A; line-height:1.6;
+  }
+  .validation-note strong{color:var(--teal);}
+
+  /* ───────── FOOTER ───────── */
+  footer{background:var(--navy); color:#8FA3C8; padding:60px 0 30px;}
+  .footer-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:40px; margin-bottom:44px;}
+  .footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .footer-logo span{font-family:'Fraunces',serif;font-size:18px;color:var(--white);font-weight:600;}
+  footer p.desc{font-size:13px; line-height:1.6; max-width:280px;}
+  footer h5{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:#5B7BAE; margin-bottom:16px;}
+  footer ul{list-style:none;}
+  footer li{margin-bottom:10px; font-size:13.5px;}
+  footer li a:hover{color:var(--white);}
+  .footer-bottom{
+    border-top:1px solid #2A3A5C; padding-top:24px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-size:12px; color:#5B7BAE;
+  }
+
+  @media (max-width:880px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero h1{font-size:38px;}
+    .problem-grid, .feat-grid{grid-template-columns:1fr;}
+    .price-grid{grid-template-columns:1fr;}
+    .price-card.featured{transform:none;}
+    .compliance-grid{grid-template-columns:repeat(2,1fr);}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+    .nav-links{display:none;}
+    .how-row{grid-template-columns:1fr; text-align:left;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-inner">
+    <div class="logo">
+      <div class="logo-mark">A</div>
+      August Home
+    </div>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#integrations">Integrations</a>
+      <a href="#compliance">Compliance</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#pricing" class="nav-cta">Get started</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ───────── HERO ───────── -->
+<header class="hero">
+
+  <div class="hero-bg">
+    <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0E1830"/>
+          <stop offset="55%" stop-color="#1C2B4A"/>
+          <stop offset="100%" stop-color="#27406E"/>
+        </linearGradient>
+        <linearGradient id="doorGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#1F5C48"/>
+          <stop offset="100%" stop-color="#143B2E"/>
+        </linearGradient>
+        <linearGradient id="wallGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#E9E4D6"/>
+          <stop offset="100%" stop-color="#D8D2C0"/>
+        </linearGradient>
+        <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#7FB4F0" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#7FB4F0" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <rect width="1600" height="900" fill="url(#sky)"/>
+
+      <!-- facade -->
+      <rect x="850" y="0" width="750" height="900" fill="url(#wallGrad)" opacity="0.95"/>
+      <rect x="850" y="0" width="14" height="900" fill="#C7C0AC"/>
+
+      <!-- door frame -->
+      <rect x="1000" y="60" width="430" height="840" fill="#EFE9DB"/>
+      <rect x="1020" y="80" width="390" height="820" fill="url(#doorGrad)"/>
+
+      <!-- door panel lines -->
+      <rect x="1045" y="110" width="160" height="280" fill="none" stroke="#0F2E22" stroke-width="3" opacity="0.5"/>
+      <rect x="1225" y="110" width="160" height="280" fill="none" stroke="#0F2E22" stroke-width="3" opacity="0.5"/>
+      <rect x="1045" y="420" width="160" height="280" fill="none" stroke="#0F2E22" stroke-width="3" opacity="0.5"/>
+      <rect x="1225" y="420" width="160" height="280" fill="none" stroke="#0F2E22" stroke-width="3" opacity="0.5"/>
+
+      <!-- handle / lock -->
+      <circle cx="1210" cy="500" r="11" fill="#C9A24B"/>
+      <circle cx="1210" cy="560" r="15" fill="none" stroke="#C9A24B" stroke-width="4"/>
+
+      <!-- smart keypad glow on door -->
+      <rect x="1188" y="430" width="40" height="56" rx="6" fill="#0B1C16" stroke="#7FB4F0" stroke-width="1.5"/>
+      <circle cx="1208" cy="448" r="13" fill="url(#glow)"/>
+      <rect x="1196" y="460" width="24" height="3" rx="1.5" fill="#9FD6FF"/>
+      <rect x="1196" y="468" width="24" height="3" rx="1.5" fill="#9FD6FF" opacity="0.6"/>
+
+      <!-- step / threshold -->
+      <rect x="980" y="876" width="470" height="24" fill="#BDB6A0"/>
+
+      <!-- ===== figure: guest with phone, reaching toward keypad ===== -->
+      <g transform="translate(1130,560)">
+        <!-- arm raised -->
+        <path d="M -10 -40 Q 30 -90 58 -118" stroke="#D9B89A" stroke-width="20" stroke-linecap="round" fill="none"/>
+        <!-- phone in hand -->
+        <rect x="44" y="-138" width="22" height="38" rx="4" fill="#101418" stroke="#3A4660" stroke-width="1.5" transform="rotate(18 55 -119)"/>
+        <!-- torso -->
+        <path d="M -40 40 Q -46 -50 -10 -50 Q 26 -52 24 40 Z" fill="#1B6B55"/>
+        <!-- head -->
+        <circle cx="-12" cy="-86" r="26" fill="#D9B89A"/>
+        <path d="M -38 -90 Q -36 -118 -12 -118 Q 14 -118 14 -90 Q 6 -104 -12 -104 Q -30 -104 -38 -90 Z" fill="#3A2418"/>
+        <!-- backpack -->
+        <path d="M -52 -10 Q -66 -10 -64 30 Q -64 56 -44 56 L -44 -6 Z" fill="#EDE6D6" stroke="#C9C0A8" stroke-width="2"/>
+        <!-- legs -->
+        <rect x="-34" y="38" width="20" height="70" rx="8" fill="#E6E0CF"/>
+        <rect x="-2" y="38" width="20" height="70" rx="8" fill="#E6E0CF"/>
+      </g>
+
+      <!-- rolling suitcase -->
+      <g transform="translate(1245,640)">
+        <rect x="0" y="0" width="62" height="92" rx="6" fill="#8F98A8"/>
+        <rect x="0" y="0" width="62" height="92" rx="6" fill="none" stroke="#5C6478" stroke-width="2"/>
+        <rect x="22" y="-26" width="18" height="28" rx="6" fill="none" stroke="#8F98A8" stroke-width="5"/>
+        <circle cx="14" cy="96" r="7" fill="#3A3F4C"/>
+        <circle cx="48" cy="96" r="7" fill="#3A3F4C"/>
+      </g>
+
+      <!-- second figure: host, slightly behind, smiling, holding phone lower -->
+      <g transform="translate(1010,590)">
+        <path d="M -36 38 Q -42 -46 -8 -46 Q 26 -48 22 38 Z" fill="#27406E"/>
+        <circle cx="-10" cy="-80" r="25" fill="#C99A78"/>
+        <path d="M -34 -84 Q -32 -110 -10 -110 Q 12 -110 12 -84 Q 4 -98 -10 -98 Q -26 -98 -34 -84 Z" fill="#1C1410"/>
+        <rect x="-30" y="36" width="19" height="66" rx="8" fill="#CFE0EE"/>
+        <rect x="0" y="36" width="19" height="66" rx="8" fill="#CFE0EE"/>
+        <!-- arm holding phone down -->
+        <path d="M 14 -10 Q 38 10 46 36" stroke="#C99A78" stroke-width="17" stroke-linecap="round" fill="none"/>
+        <rect x="38" y="30" width="18" height="32" rx="4" fill="#101418" stroke="#3A4660" stroke-width="1.5"/>
+      </g>
+
+      <!-- small potted plant, left, echoing original framing -->
+      <g transform="translate(40,760)">
+        <ellipse cx="40" cy="120" rx="46" ry="12" fill="#0E1830" opacity="0.3"/>
+        <path d="M 10 60 Q 0 0 40 -10 Q 80 0 70 60 Z" fill="#2E5F46"/>
+        <rect x="20" y="55" width="40" height="46" rx="4" fill="#7A6A52"/>
+      </g>
+
+      <!-- connectivity lines from keypad to phones, suggesting the sync -->
+      <path d="M 1208 448 Q 1170 480 1145 520" stroke="#7FB4F0" stroke-width="1.5" stroke-dasharray="4 6" opacity="0.55" fill="none"/>
+      <path d="M 1208 448 Q 1090 470 1047 540" stroke="#7FB4F0" stroke-width="1.5" stroke-dasharray="4 6" opacity="0.4" fill="none"/>
+    </svg>
+  </div>
+  <div class="hero-bg-overlay"></div>
+
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Smart access for short-term rentals</span>
+      <h1>Your booking calendar<br>now <em>controls</em> your locks.</h1>
+      <p class="lead">August Home generates a guest's key the moment their Airbnb or Booking.com reservation is confirmed — and revokes it the moment they check out. No codes to forget. No locksmith. No manual handover, ever.</p>
+      <div class="hero-ctas">
+        <a href="#pricing" class="btn-primary">See pricing →</a>
+        <a href="#how" class="btn-secondary">How it works</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">30.4 min</div>
+          <div class="stat-label">average time hosts lose<br>per booking today</div>
+        </div>
+        <div>
+          <div class="stat-num">9</div>
+          <div class="stat-label">European cities<br>in our host research</div>
+        </div>
+        <div>
+          <div class="stat-num">0</div>
+          <div class="stat-label">manual steps once<br>a stay is confirmed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- signature element: live access timeline -->
+    <div class="timeline-card">
+      <span class="eyebrow">Live on a booking</span>
+      <div class="timeline-title">What happens, automatically</div>
+      <div id="timeline"></div>
+    </div>
+  </div>
+</header>
+
+<div class="trust-strip">
+  <div class="wrap">
+    <div class="trust-track">
+      <span>Fits existing Euro-profile cylinders</span>
+      <span>·</span>
+      <span>Matter-native</span>
+      <span>·</span>
+      <span>GDPR by design</span>
+      <span>·</span>
+      <span>No mandatory guest account</span>
+      <span>·</span>
+      <span>Works with Alexa, Google Home, HomeKit</span>
+    </div>
+  </div>
+</div>
+
+<!-- ───────── PROBLEM ───────── -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Why we built this</span>
+      <h2>Hosts told us exactly<br>what's broken.</h2>
+      <p>We interviewed 25 short-term rental hosts across nine European cities before writing a line of product copy. This is what came back.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-pct">40%</div>
+        <h3>Guests forget the code</h3>
+        <p>The single largest source of failed check-ins. Codes get lost in inboxes, mistyped, or simply forgotten by the time a guest is standing at the door.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-pct">28%</div>
+        <h3>Already own a smart lock</h3>
+        <p>Hardware was never the gap. Hosts who already use a smart lock still report the same coordination pain — because nothing talks to their booking calendar.</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-pct">80%</div>
+        <h3>Lose 20+ minutes per booking</h3>
+        <p>Across every city we visited, hosts described the same pattern: messaging guests, updating lockbox codes, chasing cleaners — every single booking, by hand.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── HOW IT WORKS ───────── -->
+<section class="section alt" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">How it works</span>
+      <h2>Three things happen.<br>You do none of them.</h2>
+    </div>
+    <div class="how-list">
+      <div class="how-row">
+        <div class="how-step">01</div>
+        <div>
+          <h3>A booking is confirmed</h3>
+          <p>The moment a guest books on Airbnb or Booking.com, August Home reads the reservation dates directly from your calendar.</p>
+        </div>
+        <div class="how-visual"><div class="pulse-ring"></div><span class="glyph">📅</span></div>
+      </div>
+      <div class="how-row">
+        <div class="how-step">02</div>
+        <div>
+          <h3>A key is generated and sent</h3>
+          <p>A time-limited key is created automatically and delivered by SMS or web link — no app download, no account creation required for your guest.</p>
+        </div>
+        <div class="how-visual"><div class="pulse-ring" style="animation-delay:.8s"></div><span class="glyph">🔑</span></div>
+      </div>
+      <div class="how-row">
+        <div class="how-step">03</div>
+        <div>
+          <h3>Access expires at checkout</h3>
+          <p>The key revokes itself the moment the stay ends. The event is written to your compliance log automatically — nothing for you to track.</p>
+        </div>
+        <div class="how-visual"><div class="pulse-ring" style="animation-delay:1.6s"></div><span class="glyph">🔒</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── FEATURES ───────── -->
+<section class="section" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">What's included</span>
+      <h2>Built for hosts who<br>manage more than one door.</h2>
+      <p>Every feature here exists because a host asked for it in our research — not because it looked good on a spec sheet.</p>
+    </div>
+    <div class="feat-grid">
+
+      <div class="feat-card">
+        <div class="feat-icon">↻</div>
+        <h3>Booking-calendar sync</h3>
+        <p>Connects directly to Airbnb, Booking.com, and major PMS platforms. Keys generate and expire on their own — your calendar is the only thing you manage.</p>
+        <div class="feat-tag">Core feature</div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">⊞</div>
+        <h3>Multi-property dashboard</h3>
+        <p>Every property, every guest, every cleaner — one screen. Built for hosts managing two, five, or fifteen listings without hiring an ops team.</p>
+        <div class="feat-tag">Core feature</div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">⎘</div>
+        <h3>No-app web link access</h3>
+        <p>Guests tap a link in a text message — no Nuki app, no August app, no login. The single biggest source of guest complaints we heard, solved.</p>
+        <div class="feat-tag">Guest experience</div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">⛁</div>
+        <h3>Service-provider scheduling</h3>
+        <p>Give cleaners and maintenance staff time-windowed access tied to your actual turnover schedule — not a shared permanent code.</p>
+        <div class="feat-tag">Operations</div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">▤</div>
+        <h3>Full activity log</h3>
+        <p>Every lock and unlock event, timestamped, per property. Know exactly who entered and when — without checking in yourself.</p>
+        <div class="feat-tag">Security</div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">⛨</div>
+        <h3>Compliance audit export</h3>
+        <p>One-click PDF export of every check-in and check-out, built for cities enforcing night-cap registration limits.</p>
+        <div class="feat-tag">EU-specific</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ───────── INTEGRATIONS ───────── -->
+<section class="section alt" id="integrations">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Connects with what you already use</span>
+      <h2>One sync. Every platform.</h2>
+      <p>August Home reads your booking calendar directly — no manual entry, no double-booking risk.</p>
+    </div>
+    <div class="integration-row">
+      <div class="integration-chip"><span class="dot"></span>Airbnb</div>
+      <div class="integration-chip"><span class="dot"></span>Booking.com</div>
+      <div class="integration-chip"><span class="dot"></span>Guesty</div>
+      <div class="integration-chip"><span class="dot"></span>Hospitable</div>
+      <div class="integration-chip"><span class="dot"></span>Lodgify</div>
+      <div class="integration-chip"><span class="dot"></span>Smoobu</div>
+      <div class="integration-chip"><span class="dot"></span>Google Home</div>
+      <div class="integration-chip"><span class="dot"></span>Amazon Alexa</div>
+      <div class="integration-chip"><span class="dot"></span>Apple HomeKit</div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── COMPLIANCE ───────── -->
+<section class="compliance" id="compliance">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" style="color:#7FA8E0;">Built for European regulation</span>
+      <h2>Compliance isn't a footnote.<br>It's a feature.</h2>
+      <p>Vienna caps rentals at 90 nights a year. Barcelona at 30. Every host we spoke to in a regulated city said the same thing: tracking it manually is its own job.</p>
+    </div>
+    <div class="compliance-grid">
+      <div class="comp-card">
+        <div class="num">01</div>
+        <h4>GDPR by design</h4>
+        <p>No guest account required. Access data is minimal, encrypted, and never sold or shared with third parties.</p>
+      </div>
+      <div class="comp-card">
+        <div class="num">02</div>
+        <h4>Night-cap tracking</h4>
+        <p>Every check-in counts automatically toward your local rental-night limit — visible on your dashboard in real time.</p>
+      </div>
+      <div class="comp-card">
+        <div class="num">03</div>
+        <h4>Exportable evidence</h4>
+        <p>A single PDF, ready for any local authority request, generated in seconds — not assembled from memory.</p>
+      </div>
+      <div class="comp-card">
+        <div class="num">04</div>
+        <h4>Consent-first guests</h4>
+        <p>Guests grant access without creating an account or sharing biometric data — eliminating the refusals hosts told us they were seeing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────── PRICING ───────── -->
+<section class="section" id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Pricing</span>
+      <h2>One retrofit lock.<br>Two ways to automate it.</h2>
+    </div>
+
+    <div class="price-grid">
+
+      <div class="price-card">
+        <span class="price-kind">Hardware</span>
+        <div class="price-name">August Retrofit Lock</div>
+        <div class="price-desc">One-time purchase. Fits your existing Euro-profile cylinder — no drilling, no locksmith.</div>
+        <div class="price-num">€149<span>–€199 / door</span></div>
+        <ul class="price-feat">
+          <li>5-minute self-installation</li>
+          <li>Matter-native, works with your existing smart home</li>
+          <li>Rechargeable battery, ~6 month life</li>
+          <li>Manual key always still works</li>
+        </ul>
+        <a href="#" class="price-btn">Buy the lock</a>
+      </div>
+
+      <div class="price-card featured">
+        <span class="price-kind">Subscription</span>
+        <div class="price-name">STR Workflow</div>
+        <div class="price-desc">Everything a multi-property host needs to stop managing access by hand.</div>
+        <div class="price-num">€9.99<span>/ property / month</span></div>
+        <ul class="price-feat">
+          <li>Automatic booking-calendar sync</li>
+          <li>Multi-property dashboard</li>
+          <li>No-app guest access links</li>
+          <li>GDPR-compliant audit log</li>
+        </ul>
+        <a href="#" class="price-btn">Start 30-day trial</a>
+      </div>
+
+      <div class="price-card">
+        <span class="price-kind">Subscription</span>
+        <div class="price-name">Pro</div>
+        <div class="price-desc">For portfolio operators managing service teams across several properties.</div>
+        <div class="price-num">€19.99<span>/ property / month</span></div>
+        <ul class="price-feat">
+          <li>Everything in STR Workflow</li>
+          <li>Cleaner & maintenance scheduling</li>
+          <li>Advanced access analytics</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="#" class="price-btn">Start 30-day trial</a>
+      </div>
+
+    </div>
+
+    <div class="validation-note">
+      <strong>Where this pricing comes from:</strong> validated against 25 host interviews across 9 European cities. 36% of hosts indicated a willingness to pay of €25–40/property/month for full automation — our blended pricing sits below that ceiling deliberately, to remove price as a barrier to first adoption.
+    </div>
+  </div>
+</section>
+
+<!-- ───────── FOOTER ───────── -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <div class="logo-mark" style="background:#2E5FA3;">A</div>
+          <span>August Home</span>
+        </div>
+        <p class="desc">Smart access automation for short-term rental hosts across Europe. Built on validated research, not assumptions.</p>
+      </div>
+      <div>
+        <h5>Product</h5>
+        <ul>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#integrations">Integrations</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Hosts</h5>
+        <ul>
+          <li><a href="#compliance">Compliance</a></li>
+          <li><a href="#">Multi-property guide</a></li>
+          <li><a href="#">Switching from a lockbox</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About August Home</a></li>
+          <li><a href="#">Research & methodology</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 August Home. Concept site for MASCO302, EU Business School Munich — illustrative academic project.</span>
+      <span>Smart Access Innovators · Term III 2025–26</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const events = [
+    { time: "T – 0 sec", text: "Booking confirmed on Airbnb", sub: "Reservation dates read automatically from calendar" },
+    { time: "T + 4 sec", text: "Access key generated", sub: "Time-limited to the exact stay duration" },
+    { time: "T + 5 sec", text: "Link sent to guest by SMS", sub: "No app, no account, no password" },
+    { time: "Checkout", text: "Key revoked automatically", sub: "Logged to your compliance export instantly" },
+  ];
+
+  const container = document.getElementById('timeline');
+  events.forEach((ev, i) => {
+    const row = document.createElement('div');
+    row.className = 'tl-row';
+    row.innerHTML = `
+      <div class="tl-dot-col">
+        <div class="tl-dot" data-i="${i}"></div>
+        ${i < events.length - 1 ? '<div class="tl-line"></div>' : ''}
+      </div>
+      <div class="tl-content">
+        <div class="tl-time">${ev.time}</div>
+        <div class="tl-text">${ev.text}</div>
+        <div class="tl-sub">${ev.sub}</div>
+      </div>
+    `;
+    container.appendChild(row);
+  });
+
+  // sequential activation loop
+  const dots = () => Array.from(document.querySelectorAll('.tl-dot'));
+  let idx = 0;
+  function tick(){
+    const all = dots();
+    all.forEach((d,i) => { if(i<=idx) d.classList.add('active'); else d.classList.remove('active'); });
+    idx = (idx + 1) % (all.length + 1);
+  }
+  tick();
+  setInterval(tick, 1100);
+</script>
+
+</body>
+</html>
